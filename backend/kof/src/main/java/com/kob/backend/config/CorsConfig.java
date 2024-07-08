@@ -1,4 +1,4 @@
-package com.example.kof.config;
+package com.kob.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 
