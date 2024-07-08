@@ -1,7 +1,7 @@
 <template>
   <!-- 过 ref，你能够在 onMounted 钩子中访问模板中的 div 和 canvas 元素。 -->
   <div ref="parent" class="gamemap">
-    <canvas ref="canvas"></canvas>
+    <canvas ref="canvas" tabindex="0"></canvas>
   </div>
 </template>
 
