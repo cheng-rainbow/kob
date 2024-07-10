@@ -40,26 +40,50 @@
             >
           </li>
         </ul>
-        <li class="nav-item dropdown myli">
+
+        <li v-if="!userStore.user.is_login" class="nav-item myli">
+          <router-link
+            class="nav-link"
+            :to="{ name: 'user_account_login' }"
+            role="button"
+          >
+            登录
+          </router-link>
+        </li>
+        <li
+          style="margin-left: 10px"
+          v-if="!userStore.user.is_login"
+          class="nav-item myli"
+        >
+          <router-link
+            class="nav-link"
+            :to="{ name: 'user_bot_index' }"
+            role="button"
+          >
+            注册
+          </router-link>
+        </li>
+
+        <li v-else class="nav-item dropdown myli">
           <router-link
             class="nav-link dropdown-toggle"
-            :to="{ name: 'userbot' }"
+            :to="{ name: 'user_bot_index' }"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            ld
+            {{ userStore.user.username }}
           </router-link>
           <ul class="dropdown-menu">
             <li>
-              <router-link class="dropdown-item" :to="{ name: 'userbot' }"
+              <router-link
+                class="dropdown-item"
+                :to="{ name: 'user_bot_index' }"
                 >我的</router-link
               >
             </li>
             <li>
-              <router-link class="dropdown-item" :to="{ name: 'userbot' }"
-                >退出</router-link
-              >
+              <a class="dropdown-item" href="#" @click="logout">退出</a>
             </li>
           </ul>
         </li>
@@ -71,9 +95,16 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { useUserStore } from "@/stores/user";
 
 const route = useRoute();
+const userStore = useUserStore();
 let route_name = computed(() => route.name);
+
+const logout = () => {
+  console.log("logout");
+  userStore.logout();
+};
 </script>
 
 <style scoped>
