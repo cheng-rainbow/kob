@@ -9,6 +9,7 @@ export const useUserStore = defineStore("userStore", () => {
     photo: "",
     token: "",
     is_login: false,
+    pulling_info: true,
   });
 
   const updateUser = (new_user) => {
@@ -20,6 +21,10 @@ export const useUserStore = defineStore("userStore", () => {
 
   const updateToken = (token) => {
     user.token = token;
+  };
+
+  const updataPullingInfo = (flag) => {
+    user.pulling_info = flag;
   };
 
   // login
@@ -34,6 +39,7 @@ export const useUserStore = defineStore("userStore", () => {
     })
       .then((resp) => {
         if (resp.data.error_message === "success") {
+          localStorage.setItem("jwt_token", resp.data.token);
           updateToken(resp.data.token);
           data.success(resp);
         } else {
@@ -55,7 +61,6 @@ export const useUserStore = defineStore("userStore", () => {
       },
     })
       .then((resp) => {
-        console.log(resp.data);
         if (resp.data.error_message === "success") {
           updateUser({
             ...resp.data,
@@ -78,7 +83,8 @@ export const useUserStore = defineStore("userStore", () => {
     user.photo = "";
     user.is_login = false;
     user.token = "";
+    localStorage.removeItem("jwt_token");
   };
 
-  return { user, login, getinfo, logout };
+  return { user, login, getinfo, logout, updateToken, updataPullingInfo };
 });

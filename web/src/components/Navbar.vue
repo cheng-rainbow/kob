@@ -41,30 +41,7 @@
           </li>
         </ul>
 
-        <li v-if="!userStore.user.is_login" class="nav-item myli">
-          <router-link
-            class="nav-link"
-            :to="{ name: 'user_account_login' }"
-            role="button"
-          >
-            登录
-          </router-link>
-        </li>
-        <li
-          style="margin-left: 10px"
-          v-if="!userStore.user.is_login"
-          class="nav-item myli"
-        >
-          <router-link
-            class="nav-link"
-            :to="{ name: 'user_bot_index' }"
-            role="button"
-          >
-            注册
-          </router-link>
-        </li>
-
-        <li v-else class="nav-item dropdown myli">
+        <li v-if="userStore.user.is_login" class="nav-item dropdown myli">
           <router-link
             class="nav-link dropdown-toggle"
             :to="{ name: 'user_bot_index' }"
@@ -86,6 +63,30 @@
               <a class="dropdown-item" href="#" @click="logout">退出</a>
             </li>
           </ul>
+        </li>
+
+        <li v-else-if="!userStore.user.pulling_info" class="nav-item myli">
+          <router-link
+            class="nav-link"
+            :to="{ name: 'user_account_login' }"
+            role="button"
+          >
+            登录
+          </router-link>
+        </li>
+        <li v-if="userStore.user.is_login" />
+        <li
+          style="margin-left: 10px"
+          v-else-if="!userStore.user.pulling_info"
+          class="nav-item myli"
+        >
+          <router-link
+            class="nav-link"
+            :to="{ name: 'user_account_register' }"
+            role="button"
+          >
+            注册
+          </router-link>
         </li>
       </div>
     </div>

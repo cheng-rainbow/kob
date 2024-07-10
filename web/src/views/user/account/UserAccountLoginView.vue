@@ -1,5 +1,5 @@
 <template>
-  <Content>
+  <Content v-if="!userSotre.user.pulling_info">
     <div class="row justify-content-md-center">
       <div class="col-3">
         <form @submit.prevent="login">
@@ -43,6 +43,23 @@ const userSotre = useUserStore();
 let username = ref("");
 let password = ref("");
 let error_message = ref("");
+const userStore = useUserStore();
+
+const jwt_token = localStorage.getItem("jwt_token");
+if (jwt_token) {
+  userSotre.updateToken(jwt_token);
+  userStore.getinfo({
+    success(resp) {
+      router.push({ name: "home" });
+      userSotre.updataPullingInfo(false);
+    },
+    error() {
+      userSotre.updataPullingInfo(false);
+    },
+  });
+} else {
+  userSotre.updataPullingInfo(false);
+}
 
 const login = () => {
   error_message.value = "";
