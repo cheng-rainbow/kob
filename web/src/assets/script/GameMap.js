@@ -3,74 +3,72 @@ import { Wall } from "@/assets/script/Wall";
 import { Snake } from "./Snake";
 
 export class GameMap extends AcGameObject {
-  constructor(ctx, parent) {
+  constructor(ctx, parent, store) {
     super();
 
     this.ctx = ctx;
     this.parent = parent;
     this.L = 0;
-
+    this.store = store;
     this.row = 13;
     this.col = 14;
 
     this.wall = [];
     this.inner_walls_count = 30;
 
-    this.snakes = [
-      new Snake({ id: 0, color: "#4876EC", r: this.row - 2, c: 1 }, this),
-      new Snake({ id: 1, color: "#F94848", r: 1, c: this.col - 2 }, this),
-    ];
+    this.snakes = [new Snake({ id: 0, color: "#4876EC", r: this.row - 2, c: 1 }, this), new Snake({ id: 1, color: "#F94848", r: 1, c: this.col - 2 }, this)];
   }
-  check_connectivity(g, sx, sy, tx, ty) {
-    if (sx == tx && sy == ty) return true;
-    g[sx][sy] = true;
+  // check_connectivity(g, sx, sy, tx, ty) {
+  //   if (sx == tx && sy == ty) return true;
+  //   g[sx][sy] = true;
 
-    let dx = [-1, 0, 1, 0];
-    let dy = [0, 1, 0, -1];
-    for (let i = 0; i < 4; i++) {
-      let x = sx + dx[i];
-      let y = sy + dy[i];
-      if (!g[x][y] && this.check_connectivity(g, x, y, tx, ty)) return true;
-    }
-    return false;
-  }
+  //   let dx = [-1, 0, 1, 0];
+  //   let dy = [0, 1, 0, -1];
+  //   for (let i = 0; i < 4; i++) {
+  //     let x = sx + dx[i];
+  //     let y = sy + dy[i];
+  //     if (!g[x][y] && this.check_connectivity(g, x, y, tx, ty)) return true;
+  //   }
+  //   return false;
+  // }
 
   create_wall() {
-    const g = [];
-    for (let r = 0; r < this.row; r++) {
-      g[r] = [];
-      for (let c = 0; c < this.col; c++) g[r][c] = false;
-    }
+    // const g = [];
+    // for (let r = 0; r < this.row; r++) {
+    //   g[r] = [];
+    //   for (let c = 0; c < this.col; c++) g[r][c] = false;
+    // }
 
-    // 四周生成
-    for (let r = 0; r < this.row; r++) g[r][0] = g[r][this.col - 1] = true;
-    for (let c = 0; c < this.col; c++) g[0][c] = g[this.row - 1][c] = true;
+    // // 四周生成
+    // for (let r = 0; r < this.row; r++) g[r][0] = g[r][this.col - 1] = true;
+    // for (let c = 0; c < this.col; c++) g[0][c] = g[this.row - 1][c] = true;
 
-    // 内部随机
-    for (let i = 0; i < this.inner_walls_count / 2; i++) {
-      for (let j = 0; j < 1000; j++) {
-        let r = parseInt(Math.random() * this.row);
-        let c = parseInt(Math.random() * this.col);
-        if (
-          g[r][c] ||
-          g[this.row - 1 - r][this.col - 1 - c] ||
-          (r == this.row - 2 && c == 1) ||
-          (c == this.col - 2 && r == 1)
-        )
-          continue;
+    // // 内部随机
+    // for (let i = 0; i < this.inner_walls_count / 2; i++) {
+    //   for (let j = 0; j < 1000; j++) {
+    //     let r = parseInt(Math.random() * this.row);
+    //     let c = parseInt(Math.random() * this.col);
+    //     if (
+    //       g[r][c] ||
+    //       g[this.row - 1 - r][this.col - 1 - c] ||
+    //       (r == this.row - 2 && c == 1) ||
+    //       (c == this.col - 2 && r == 1)
+    //     )
+    //       continue;
 
-        g[r][c] = g[this.row - 1 - r][this.col - 1 - c] = true;
-        break;
-      }
-    }
+    //     g[r][c] = g[this.row - 1 - r][this.col - 1 - c] = true;
+    //     break;
+    //   }
+    // }
 
-    const copy_g = JSON.parse(JSON.stringify(g));
-    if (!this.check_connectivity(copy_g, this.row - 2, 1, 1, this.col - 2))
-      return false;
-
+    // const copy_g = JSON.parse(JSON.stringify(g));
+    // if (!this.check_connectivity(copy_g, this.row - 2, 1, 1, this.col - 2))
+    //   return false;
+    const g = this.store.pk.gamemap;
+    console.log(g);
     for (let r = 0; r < this.row; r++) {
       for (let c = 0; c < this.col; c++) {
-        if (g[r][c] === true) this.wall.push(new Wall(r, c, this));
+        if (g[r][c] === true || g[r][c] === 1) this.wall.push(new Wall(r, c, this));
       }
     }
     return true;
@@ -95,18 +93,14 @@ export class GameMap extends AcGameObject {
   }
 
   start() {
-    for (let i = 0; i < 1000; i++) if (this.create_wall()) break;
+    // for (let i = 0; i < 1000; i++) if (this.create_wall()) break;
 
+    this.create_wall();
     this.add_listening_events();
   }
 
   update_size() {
-    this.L = parseInt(
-      Math.min(
-        this.parent.clientWidth / this.col,
-        this.parent.clientHeight / this.row
-      )
-    );
+    this.L = parseInt(Math.min(this.parent.clientWidth / this.col, this.parent.clientHeight / this.row));
     this.ctx.canvas.width = this.L * this.col;
     this.ctx.canvas.height = this.L * this.row;
   }
@@ -143,8 +137,7 @@ export class GameMap extends AcGameObject {
       }
 
       for (let i = 0; i < k; i++) {
-        if (snake.cells[i].r === cell.r && snake.cells[i].c === cell.c)
-          return false;
+        if (snake.cells[i].r === cell.r && snake.cells[i].c === cell.c) return false;
       }
     }
 

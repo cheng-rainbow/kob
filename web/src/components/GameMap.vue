@@ -8,12 +8,14 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { GameMap } from "../assets/script/GameMap";
+import { usePkStore } from "@/stores/pk";
 
 let parent = ref(null);
 let canvas = ref(null);
+const pkStore = usePkStore();
 
 onMounted(() => {
-  new GameMap(canvas.value.getContext("2d"), parent.value);
+  new GameMap(canvas.value.getContext("2d"), parent.value, pkStore);
 });
 </script>
 
