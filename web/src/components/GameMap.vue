@@ -15,7 +15,7 @@ let canvas = ref(null);
 const pkStore = usePkStore();
 
 onMounted(() => {
-  new GameMap(canvas.value.getContext("2d"), parent.value, pkStore);
+  pkStore.updateGameObject(new GameMap(canvas.value.getContext("2d"), parent.value, pkStore));
 });
 </script>
 

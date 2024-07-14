@@ -13,18 +13,18 @@ export class Snake extends AcGameObject {
     this.cells = [new Cell(info.r, info.c)];
 
     this.next_cell = null;
-    this.speed = 5;
+    this.speed = 5; // 蛇每秒走5个格子
     this.direction = -1; // -1表示没有指令, 0、1、2、3表示上右下左
     this.status = "idle"; // idle表示静止, move表示移动, die表示死亡
 
     this.dr = [-1, 0, 1, 0];
     this.dc = [0, 1, 0, -1];
-    this.step = 0;
+    this.step = 0; // 表示回合数
 
-    this.eps = 1e-2;
+    this.eps = 1e-2; // 允许的误差
 
     this.eye_direction = 0;
-    if (this.id === 1) this.eye_direction = 2; //  右上角的蛇头向下
+    if (this.id === 1) this.eye_direction = 2; //  右上角的蛇头初始向下
 
     this.eye_dx = [
       [-1, 1],
@@ -46,10 +46,7 @@ export class Snake extends AcGameObject {
     // 执行next_step的前提的 双方都有下一步的输入
     const d = this.direction;
     this.eye_direction = d;
-    this.next_cell = new Cell( // 创建下一个cell, cell对象中包含x, y, 即下一个cell的园点x, y坐标
-      this.cells[0].r + this.dr[d],
-      this.cells[0].c + this.dc[d]
-    );
+    this.next_cell = new Cell(this.cells[0].r + this.dr[d], this.cells[0].c + this.dc[d]); // 创建下一个cell, cell对象中包含x, y, 即下一个cell的园点x, y坐标
     this.step++;
     this.direction = -1;
     this.status = "move"; // 移动的状态
@@ -59,10 +56,10 @@ export class Snake extends AcGameObject {
       this.cells[i] = JSON.parse(JSON.stringify(this.cells[i - 1]));
     }
 
-    if (!this.gamemap.check_valid(this.next_cell)) {
-      // 下一步不合法的话 死亡
-      this.status = "die";
-    }
+    // if (!this.gamemap.check_valid(this.next_cell)) {
+    //   // 下一步不合法的话 死亡
+    //   this.status = "die";
+    // }
   }
 
   set_direction(d) {
@@ -133,31 +130,18 @@ export class Snake extends AcGameObject {
     for (let i = 1; i < this.cells.length; i++) {
       const a = this.cells[i - 1],
         b = this.cells[i];
-      if (Math.abs(a.x - b.x) < this.eps && Math.abs(a.y - b.y) < this.eps)
-        continue;
+      if (Math.abs(a.x - b.x) < this.eps && Math.abs(a.y - b.y) < this.eps) continue;
       if (Math.abs(a.x - b.x) < this.eps) {
-        ctx.fillRect(
-          (a.x - 0.4) * L,
-          Math.min(a.y, b.y) * L,
-          L * 0.8,
-          Math.abs(a.y - b.y) * L
-        );
+        ctx.fillRect((a.x - 0.4) * L, Math.min(a.y, b.y) * L, L * 0.8, Math.abs(a.y - b.y) * L);
       } else {
-        ctx.fillRect(
-          Math.min(a.x, b.x) * L,
-          (a.y - 0.4) * L,
-          Math.abs(a.x - b.x) * L,
-          L * 0.8
-        );
+        ctx.fillRect(Math.min(a.x, b.x) * L, (a.y - 0.4) * L, Math.abs(a.x - b.x) * L, L * 0.8);
       }
     }
 
     ctx.fillStyle = "black";
     for (let i = 0; i < 2; i++) {
-      const eye_x =
-        (this.cells[0].x + this.eye_dx[this.eye_direction][i] * 0.15) * L;
-      const eye_y =
-        (this.cells[0].y + this.eye_dy[this.eye_direction][i] * 0.15) * L;
+      const eye_x = (this.cells[0].x + this.eye_dx[this.eye_direction][i] * 0.15) * L;
+      const eye_y = (this.cells[0].y + this.eye_dy[this.eye_direction][i] * 0.15) * L;
       ctx.beginPath();
       ctx.arc(eye_x, eye_y, L * 0.05, 0, Math.PI * 2);
       ctx.fill();
