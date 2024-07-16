@@ -201,9 +201,7 @@ const update_bot = (bot) => {
     },
   }).then((resp) => {
     if (resp.data.error_message === "update success") {
-      botadd.title = "";
-      botadd.content = "";
-      botadd.description = "";
+      refresh_bots();
       Modal.getInstance("#update-modal-" + bot.id).hide();
     }
   });
