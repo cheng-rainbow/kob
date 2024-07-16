@@ -11,14 +11,15 @@ import { useUserStore } from "@/stores/user";
 import { onMounted, onUnmounted } from "vue";
 import MatchGround from "@/components/MatchGround.vue";
 import ResultBoard from "@/components/ResultBoard.vue";
+import { useRecordStore } from "@/stores/record";
 const pkStore = usePkStore();
 const userStore = useUserStore();
-
+const recordStore = useRecordStore();
 // 当前登录的用户的id, 应该传递的是当前用户的token, 用于验证身份, 而不是直接传递id
 const socketUrl = `ws://127.0.0.1:3000/websocket/${userStore.user.token}`;
 
 pkStore.updateLoser("none");
-
+recordStore.updateIsRecod(false);
 let socket = null;
 
 onMounted(() => {

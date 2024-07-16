@@ -3,6 +3,7 @@ import NotFound from "@/views/error/NotFound.vue";
 import PkIndex from "@/views/pk/PkIndex.vue";
 import RankListIndex from "@/views/ranklist/RankListIndex.vue";
 import RecordIndex from "@/views/record/RecordIndex.vue";
+import RecordContent from "@/views/record/RecordContent.vue";
 import UserAccountLoginView from "@/views/user/account/UserAccountLoginView.vue";
 import UserAccountRegisterView from "@/views/user/account/UserAccountRegisterView.vue";
 import UserbotIndex from "@/views/user/bot/UserbotIndex.vue";
@@ -36,6 +37,14 @@ const router = createRouter({
       path: "/record",
       name: "record",
       component: RecordIndex,
+      meta: {
+        requestAuth: true,
+      },
+    },
+    {
+      path: "/record/:recordId/",
+      name: "record_content",
+      component: RecordContent,
       meta: {
         requestAuth: true,
       },

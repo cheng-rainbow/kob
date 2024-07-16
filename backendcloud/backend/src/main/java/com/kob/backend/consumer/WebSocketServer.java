@@ -40,7 +40,7 @@ public class WebSocketServer {
     private final static String removePlayerUrl = "http://127.0.0.1:3001/player/remove/";
 
     // 注入 UserMapper, 由于不是单例模式, 不能直接用@Autowired注入
-    private static UserMapper userMapper;
+    public static UserMapper userMapper;
     @Autowired
     public  void setUserMapper(UserMapper userMapper) {
         WebSocketServer.userMapper = userMapper;
