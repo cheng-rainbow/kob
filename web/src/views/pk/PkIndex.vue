@@ -2,6 +2,9 @@
   <PlayGround v-if="pkStore.pk.status === 'playing'"></PlayGround>
   <MatchGround v-if="pkStore.pk.status === 'matching'" />
   <ResultBoard v-if="pkStore.pk.loser != 'none'" />
+
+  <div class="user-color-blued" v-if="pkStore.pk.status === 'playing' && userStore.user.id == pkStore.pk.a_id">我方为: 蓝色方</div>
+  <div class="user-color-red" v-if="pkStore.pk.status === 'playing' && userStore.user.id == pkStore.pk.b_id">我方为: 红色方</div>
 </template>
 
 <script setup>
@@ -82,4 +85,18 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.user-color-blued {
+  text-align: center;
+  color: blue;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.user-color-red {
+  text-align: center;
+  color: red;
+  font-size: 30px;
+  font-weight: 600;
+}
+</style>

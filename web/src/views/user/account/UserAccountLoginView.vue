@@ -5,23 +5,12 @@
         <form @submit.prevent="login">
           <div class="mb-3">
             <label for="username" class="form-label">username</label>
-            <input
-              v-model="username"
-              type="text"
-              class="form-control"
-              id="username"
-              aria-describedby="emailHelp"
-            />
+            <input v-model="username" type="text" class="form-control" id="username" aria-describedby="emailHelp" />
           </div>
 
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input
-              v-model="password"
-              type="password"
-              class="form-control"
-              id="password"
-            />
+            <input v-model="password" type="password" class="form-control" id="password" />
           </div>
 
           <div class="error-message">{{ error_message }}</div>

@@ -13,7 +13,7 @@
         <div class="card" style="margin-top: 20px">
           <div class="card-header" style="font-size: 130%">
             我的Bot
-            <button type="button" class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#add-bot-btn">创建Bot</button>
+            <button type="button" class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#add-bot-btn" @click="btn_create_bot">创建Bot</button>
 
             <!-- Modal -->
             <div class="modal fade modal-lg" id="add-bot-btn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -113,6 +113,13 @@ import { Modal } from "bootstrap/dist/js/bootstrap";
 
 const userStore = useUserStore();
 let bots = ref([]);
+
+const btn_create_bot = () => {
+  botadd.title = "";
+  botadd.description = "";
+  botadd.content = "";
+  botadd.error_message = "";
+};
 
 const botadd = reactive({
   title: "",
